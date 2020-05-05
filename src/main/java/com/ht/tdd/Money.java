@@ -13,11 +13,11 @@ public class Money {
     }
 
     public static Money dollar(BigDecimal amount) {
-        return new Dollar(amount, "USD");
+        return new Money(amount, "USD");
     }
 
     public static Money lira(BigDecimal amount) {
-        return new Lira(amount, "TRY");
+        return new Money(amount, "TRY");
     }
 
     public Money times(BigDecimal multiplier) {
