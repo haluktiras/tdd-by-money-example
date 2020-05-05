@@ -3,7 +3,7 @@ package com.ht.tdd;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public abstract class Money {
+public class Money {
     protected BigDecimal amount;
     protected String currency;
 
@@ -11,10 +11,6 @@ public abstract class Money {
         this.amount = amount;
         this.currency = currency;
     }
-
-    protected abstract String currency();
-
-    public abstract Money times(BigDecimal multiplier);
 
     public static Money dollar(BigDecimal amount) {
         return new Dollar(amount, "USD");
@@ -24,9 +20,21 @@ public abstract class Money {
         return new Lira(amount, "TRY");
     }
 
+    public Money times(BigDecimal multiplier) {
+        return new Money(amount.multiply(multiplier), this.currency);
+    }
+
     public boolean equals(Object object) {
         Money money = (Money) object;
         return Objects.equals(amount, money.amount)
-                && this.getClass().equals(object.getClass());
+                && this.currency == money.currency;
+    }
+
+    @Override
+    public String toString() {
+        return "Money{" +
+                "amount=" + amount +
+                ", currency='" + currency + '\'' +
+                '}';
     }
 }

@@ -38,8 +38,8 @@ class MoneyTest {
 
     @Test
     public void testCurrency(){
-        assertEquals("USD", Money.dollar(BigDecimal.ONE).currency());
-        assertEquals("TRY", Money.lira(BigDecimal.ONE).currency());
+        assertEquals("USD", Money.dollar(BigDecimal.ONE).currency);
+        assertEquals("TRY", Money.lira(BigDecimal.ONE).currency);
     }
 
 }
