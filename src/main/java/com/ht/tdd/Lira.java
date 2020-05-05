@@ -4,11 +4,16 @@ import java.math.BigDecimal;
 
 public class Lira extends Money {
 
-    public Lira(BigDecimal amount) {
-        this.amount = amount;
+    public Lira(BigDecimal amount, String currency) {
+        super(amount, currency);
+    }
+
+    @Override
+    protected String currency() {
+        return currency;
     }
 
     public Money times(BigDecimal multiplier) {
-        return new Lira(amount.multiply(multiplier));
+        return Money.lira(amount.multiply(multiplier));
     }
 }

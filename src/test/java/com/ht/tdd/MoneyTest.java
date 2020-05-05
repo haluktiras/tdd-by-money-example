@@ -36,4 +36,10 @@ class MoneyTest {
         assertNotEquals(Money.lira(BigDecimal.valueOf(5L)), Money.lira(BigDecimal.TEN));
     }
 
+    @Test
+    public void testCurrency(){
+        assertEquals("USD", Money.dollar(BigDecimal.ONE).currency());
+        assertEquals("TRY", Money.lira(BigDecimal.ONE).currency());
+    }
+
 }
