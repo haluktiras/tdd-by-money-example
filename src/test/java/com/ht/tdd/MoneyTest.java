@@ -72,4 +72,18 @@ class MoneyTest {
         assertEquals(Money.dollar(BigDecimal.ONE), result);
     }
 
+    @Test
+    public void testReduceMoneyDifferentCurrency() {
+        Bank bank = new Bank();
+        bank.addRate("TRY", "USD", BigDecimal.valueOf(7L));
+        Money result = bank.reduce(Money.lira(BigDecimal.valueOf(7L)), "USD");
+        assertEquals(Money.dollar(BigDecimal.ONE), result);
+    }
+
+    @Test
+    public void testIdentityRate() {
+        assertEquals(BigDecimal.ONE, new Bank().rate("USD", "USD"));
+        assertEquals(BigDecimal.ONE, new Bank().rate("TRY", "TRY"));
+    }
+
 }

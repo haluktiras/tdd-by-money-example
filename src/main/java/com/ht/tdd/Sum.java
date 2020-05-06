@@ -12,7 +12,8 @@ public class Sum implements Expression{
         this.addmend = addmend;
     }
 
-    public Money reduce(String to) {
+    @Override
+    public Money reduce(Bank bank, String to) {
         BigDecimal amount = augmend.amount.add(addmend.amount);
         return new Money(amount, to);
     }
