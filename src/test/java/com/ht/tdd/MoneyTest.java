@@ -12,6 +12,10 @@ class MoneyTest {
     public static final BigDecimal CONST_TWO = BigDecimal.valueOf(2L);
     public static final BigDecimal CONST_THREE = BigDecimal.valueOf(3L);
     public static final BigDecimal CONST_FIVE = BigDecimal.valueOf(5L);
+    public static final BigDecimal CONST_SEVEN = BigDecimal.valueOf(7L);
+
+    public static final String CONST_CURRENCY_NAME_TRY = "TRY";
+    public static final String CONST_CURRENCY_NAME_USD = "USD";
 
     @Test
     public void testMultiplication() {
@@ -35,8 +39,8 @@ class MoneyTest {
 
     @Test
     public void testCurrency() {
-        assertEquals("USD", Money.dollar(BigDecimal.ONE).currency);
-        assertEquals("TRY", Money.lira(BigDecimal.ONE).currency);
+        assertEquals(CONST_CURRENCY_NAME_USD, Money.dollar(BigDecimal.ONE).currency);
+        assertEquals(CONST_CURRENCY_NAME_TRY, Money.lira(BigDecimal.ONE).currency);
     }
 
     @Test
@@ -44,7 +48,7 @@ class MoneyTest {
         Money fiveDollar = Money.dollar(CONST_FIVE);
         Expression sum = fiveDollar.plus(fiveDollar);
         Bank bank = new Bank();
-        Money reduced = bank.reduce(sum, "USD");
+        Money reduced = bank.reduce(sum, CONST_CURRENCY_NAME_USD);
         assertEquals(Money.dollar(BigDecimal.TEN), reduced);
     }
 
@@ -61,29 +65,39 @@ class MoneyTest {
     public void testReduceSum() {
         Expression sum = new Sum(Money.dollar(CONST_TWO), Money.dollar(CONST_THREE));
         Bank bank = new Bank();
-        Money result = bank.reduce(sum, "USD");
+        Money result = bank.reduce(sum, CONST_CURRENCY_NAME_USD);
         assertEquals(Money.dollar(CONST_FIVE), result);
     }
 
     @Test
     public void testReduceMoney() {
         Bank bank = new Bank();
-        Money result = bank.reduce(Money.dollar(BigDecimal.ONE), "USD");
+        Money result = bank.reduce(Money.dollar(BigDecimal.ONE), CONST_CURRENCY_NAME_USD);
         assertEquals(Money.dollar(BigDecimal.ONE), result);
     }
 
     @Test
     public void testReduceMoneyDifferentCurrency() {
         Bank bank = new Bank();
-        bank.addRate("TRY", "USD", BigDecimal.valueOf(7L));
-        Money result = bank.reduce(Money.lira(BigDecimal.valueOf(7L)), "USD");
+        bank.addRate(CONST_CURRENCY_NAME_TRY, CONST_CURRENCY_NAME_USD, CONST_SEVEN);
+        Money result = bank.reduce(Money.lira(CONST_SEVEN), CONST_CURRENCY_NAME_USD);
         assertEquals(Money.dollar(BigDecimal.ONE), result);
     }
 
     @Test
     public void testIdentityRate() {
-        assertEquals(BigDecimal.ONE, new Bank().rate("USD", "USD"));
-        assertEquals(BigDecimal.ONE, new Bank().rate("TRY", "TRY"));
+        assertEquals(BigDecimal.ONE, new Bank().rate(CONST_CURRENCY_NAME_USD, CONST_CURRENCY_NAME_USD));
+        assertEquals(BigDecimal.ONE, new Bank().rate(CONST_CURRENCY_NAME_TRY, CONST_CURRENCY_NAME_TRY));
+    }
+
+    @Test
+    public void testMixedAddition() {
+        Expression fiveDollars = Money.dollar(CONST_FIVE);
+        Expression thirtyFiveLiras = Money.lira(BigDecimal.valueOf(35L));
+        Bank bank = new Bank();
+        bank.addRate(CONST_CURRENCY_NAME_TRY, CONST_CURRENCY_NAME_USD, CONST_SEVEN);
+        Money result = bank.reduce(fiveDollars.plus(thirtyFiveLiras), CONST_CURRENCY_NAME_USD);
+        assertEquals(Money.dollar(BigDecimal.TEN), result);
     }
 
 }
