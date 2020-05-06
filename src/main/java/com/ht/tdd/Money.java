@@ -4,26 +4,28 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Money implements Expression {
-    protected BigDecimal amount;
-    protected String currency;
+    protected final BigDecimal amount;
+    protected final String currency;
 
     public Money(BigDecimal amount, String currency) {
         this.amount = amount;
         this.currency = currency;
     }
 
-    public static Money dollar(BigDecimal amount) {
+    static Money dollar(BigDecimal amount) {
         return new Money(amount, "USD");
     }
 
-    public static Money lira(BigDecimal amount) {
+    static Money lira(BigDecimal amount) {
         return new Money(amount, "TRY");
     }
 
+    @Override
     public Expression times(BigDecimal multiplier) {
         return new Money(amount.multiply(multiplier), this.currency);
     }
 
+    @Override
     public Expression plus(Expression addend) {
         return new Sum(this, addend);
     }
