@@ -9,7 +9,7 @@ In this repository, I look at using Beck's classic TDD Money Example - updated t
 * Maven 3.5.2
 * JUnit 5
 
-###Test Coverage
+### Test Coverage
 * 100% class level test coverage
 * 94% method level test coverage
 * 96% line level test coverage
