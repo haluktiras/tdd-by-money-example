@@ -3,7 +3,7 @@ package com.ht.tdd;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Money {
+public class Money implements Expression{
     protected BigDecimal amount;
     protected String currency;
 
@@ -27,7 +27,12 @@ public class Money {
     public boolean equals(Object object) {
         Money money = (Money) object;
         return Objects.equals(amount, money.amount)
-                && this.currency == money.currency;
+                && Objects.equals(this.currency, money.currency);
+    }
+
+    @Override
+    public Money reduce(String to) {
+        return this;
     }
 
     @Override
@@ -36,5 +41,9 @@ public class Money {
                 "amount=" + amount +
                 ", currency='" + currency + '\'' +
                 '}';
+    }
+
+    public Expression plus(Money addend){
+        return new Sum(this, addend);
     }
 }
